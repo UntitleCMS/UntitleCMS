@@ -1,0 +1,47 @@
+{
+  "Routes": [
+
+
+    {
+      "DownstreamPathTemplate": "/api/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "blogservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/blog/{url}",
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+
+
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/{url}"
+    },
+
+
+    {
+      "DownstreamPathTemplate": "/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "facebook.com",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/facebook"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:443"
+  }
+}
