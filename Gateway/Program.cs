@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseOcelot().Wait();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
