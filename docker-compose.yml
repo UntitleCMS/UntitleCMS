@@ -8,7 +8,9 @@ services:
       dockerfile: Gateway/Dockerfile
     networks:
       - backend
-
+    depends_on:
+      - blogservice
+      - authenticationservice
 
   blogservice:
     image: villsource/blogservice
@@ -22,6 +24,8 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     networks:
       - backend
+    depends_on:
+      - blog-database
 
 
 
@@ -55,6 +59,9 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     networks:
       - backend
+    depends_on:
+      - blog-database
+
 
 
 
