@@ -12,7 +12,11 @@
         }
       ],
       "UpstreamPathTemplate": "/api/blog/{url}",
-      "DangerousAcceptAnyServerCertificateValidator": true
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore",
+        "AllowedScopes": []
+      }
     },
 
 
