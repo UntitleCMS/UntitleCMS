@@ -3,17 +3,33 @@
 
 
     {
-      "DownstreamPathTemplate": "/{url}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "blogservice",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/api/blog/{url}",
-      "DangerousAcceptAnyServerCertificateValidator": true
+      "DownstreamHostAndPorts": [ { "Host": "blogservice", "Port": 80 } ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/blog/v1/{url}",
+      "UpstreamHttpMethod": ["GET"]
     },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "blogservice", "Port": 80 } ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/blog/v1/{url}",
+      "UpstreamHttpMethod": ["POST","PUT","PATCH","DELETE"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "ownerID": "Claims[sub] > value"
+      }
+    },
+    
+
+
+
+
+
+
+
 
 
     {
@@ -26,22 +42,12 @@
         }
       ],
       "UpstreamPathTemplate": "/api/auth/{url}"
-    },
-
-
-    {
-      "DownstreamPathTemplate": "/",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "facebook.com",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/facebook"
     }
+
+
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:443"
+    "BaseUrl": "https://localhost:443",
+    "DangerousAcceptAnyServerCertificateValidator": true
   }
 }

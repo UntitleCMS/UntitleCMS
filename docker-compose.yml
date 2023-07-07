@@ -8,7 +8,9 @@ services:
       dockerfile: Gateway/Dockerfile
     networks:
       - backend
-
+    depends_on:
+      - blogservice
+      - authenticationservice
 
   blogservice:
     image: villsource/blogservice
@@ -22,6 +24,8 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     networks:
       - backend
+    depends_on:
+      - blog-database
 
 
 
@@ -50,13 +54,14 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:80
       ISSURE: http://authenticationservice 
-    ports:
-      - "8080:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     networks:
       - backend
+    depends_on:
+      - blog-database
+
 
 
 
