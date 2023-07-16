@@ -1,3 +1,4 @@
+using Gateway.Aggregators;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Values;
@@ -6,6 +7,9 @@ using OpenIddict.Validation.AspNetCore;
 using OpenIddict.Validation.SystemNetHttp;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Add services to the container.
 
@@ -40,7 +44,9 @@ builder.Services.AddHttpClient(typeof(OpenIddictValidationSystemNetHttpOptions).
 //});
 
 
-builder.Services.AddOcelot(builder.Configuration);
+builder.Services
+    .AddOcelot(builder.Configuration)
+    .AddSingletonDefinedAggregator<PostsAggregator>();
 
 var app = builder.Build();
 
@@ -56,8 +62,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseOcelot().Wait();
 
 app.MapControllers();
+app.UseOcelot().Wait();
 
 app.Run();
