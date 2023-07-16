@@ -27,26 +27,6 @@ services:
     depends_on:
       - blog-database
 
-
-
-  blog-database:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=P@ssword
-    ports:
-      - "1434:1433"
-    volumes:
-      - "blog-service:/var/opt/mssql"
-    networks:
-      - backend
-
-
-
-
-
-
-
   authenticationservice:
     image: villsource/authenticationservice
     environment: 
@@ -62,17 +42,53 @@ services:
     depends_on:
       - blog-database
 
+  picturestorageservice:
+    image: villsource/picturestorageservice
+    environment:
+      DB_CONNECTION_STRING: mongodb://user:pass@mongodb/admin
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+    ports:
+      - "30000:80"
+    volumes:
+      - C:\Users\Anirut\Pictures\img-storage:/img-storage
+    depends_on:
+      - mongodb
+    networks:
+      - backend
 
 
 
 
+  blog-database:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=P@ssword
+    ports:
+      - "1434:1433"
+    volumes:
+      - "blog-service:/var/opt/mssql"
+    networks:
+      - backend
 
-
+  mongodb:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - db:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - backend
 
 
 
 volumes:
   blog-service:
+  db:
 
 networks:
   backend:
