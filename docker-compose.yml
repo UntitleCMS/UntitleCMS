@@ -26,6 +26,7 @@ services:
       - backend
     depends_on:
       - blog-database
+      - mongo1
 
   authenticationservice:
     image: villsource/authenticationservice
@@ -84,6 +85,23 @@ services:
     networks:
       - backend
 
+
+  mongo1:
+    image: mongo
+    hostname: mongo1
+    volumes:
+      - ./mongo_database/data/m1:/data/db
+      - ./mongo_database/config/m1:/data/configdb
+      - ./mongo_database/log/m1:/data/db/log
+      - ./mongo_database/scripts/:/scripts
+    environment:
+      MONGO_INITDB_DATABASE: admin
+      IS_PRIMARY: true
+    ports:
+      - 50001:50001
+    command: bash /scripts/endpoint.sh
+    networks:
+      - backend
 
 
 volumes:
