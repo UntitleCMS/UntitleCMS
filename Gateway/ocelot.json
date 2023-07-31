@@ -2,36 +2,41 @@
   "Routes": [
 
 
+    //blog
     {
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [ { "Host": "blogservice", "Port": 80 } ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "blogservice",
+          "Port": 80
+        }
+      ],
       "DownstreamPathTemplate": "/{url}",
       "UpstreamPathTemplate": "/api/blog/v1/{url}",
-      "UpstreamHttpMethod": ["GET"]
+      "UpstreamHttpMethod": [ "GET" ]
     },
     {
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [ { "Host": "blogservice", "Port": 80 } ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "blogservice",
+          "Port": 80
+        }
+      ],
       "DownstreamPathTemplate": "/{url}",
       "UpstreamPathTemplate": "/api/blog/v1/{url}",
-      "UpstreamHttpMethod": ["POST","PUT","PATCH","DELETE"],
+      "UpstreamHttpMethod": [ "POST", "PUT", "PATCH", "DELETE" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
       },
       "AddQueriesToRequest": {
-        "ownerID": "Claims[sub] > value"
+        "sub": "Claims[sub-b64] > value"
       }
     },
-    
 
 
 
-
-
-
-
-
-
+    //auth
     {
       "DownstreamPathTemplate": "/{url}",
       "DownstreamScheme": "http",
@@ -41,11 +46,93 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/auth/{url}"
+      "UpstreamPathTemplate": "/api/auth/v1/{url}"
+    },
+
+
+
+    //img
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "picturestorageservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/img/v1/{url}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "picturestorageservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/img/v1/{url}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    },
+
+
+
+
+
+    // playground
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "blogservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/posts",
+      "UpstreamPathTemplate": "/posts",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Key": "a"
+    },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "blogservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/posts/rVsQTzkAu0OgnAjbgQcA2A",
+      "UpstreamPathTemplate": "/posts/p",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Aggregator": "PostsAggregator",
+      "Key": "b"
+    }
+
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "a"
+      ],
+      "UpstreamPathTemplate": "/",
+      "Aggregator": "PostsAggregator"
+
     }
 
 
   ],
+
+
+
+  // gb
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:443",
     "DangerousAcceptAnyServerCertificateValidator": true

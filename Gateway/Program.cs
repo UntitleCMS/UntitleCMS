@@ -1,3 +1,5 @@
+using Gateway.Aggregators;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Values;
@@ -6,6 +8,9 @@ using OpenIddict.Validation.AspNetCore;
 using OpenIddict.Validation.SystemNetHttp;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Add services to the container.
 
@@ -39,8 +44,18 @@ builder.Services.AddHttpClient(typeof(OpenIddictValidationSystemNetHttpOptions).
 //    option.DefaultAuthenticateScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
 //});
 
+// body size
+builder.Services.Configure<KestrelServerOptions>(options =>
+    options.Limits.MaxRequestBodySize = 20 * 1_000_000
+);
+builder.Services.Configure<IISServerOptions>(options =>
+    options.MaxRequestBodyBufferSize = 20 * 1_000_000
+);
 
-builder.Services.AddOcelot(builder.Configuration);
+
+builder.Services
+    .AddOcelot(builder.Configuration)
+    .AddSingletonDefinedAggregator<PostsAggregator>();
 
 var app = builder.Build();
 
@@ -56,8 +71,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseOcelot().Wait();
 
 app.MapControllers();
+app.UseOcelot().Wait();
 
 app.Run();
