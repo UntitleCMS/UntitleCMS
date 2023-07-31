@@ -79,7 +79,7 @@
         "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
       },
       "AddQueriesToRequest": {
-        "sub": "Claims[sub] > value"
+        "sub": "Claims[sub-b64] > value"
       }
     },
 
