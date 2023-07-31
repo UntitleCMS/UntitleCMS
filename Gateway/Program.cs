@@ -1,4 +1,5 @@
 using Gateway.Aggregators;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Values;
@@ -42,6 +43,14 @@ builder.Services.AddHttpClient(typeof(OpenIddictValidationSystemNetHttpOptions).
 //    option.DefaultChallengeScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
 //    option.DefaultAuthenticateScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
 //});
+
+// body size
+builder.Services.Configure<KestrelServerOptions>(options =>
+    options.Limits.MaxRequestBodySize = 20 * 1_000_000
+);
+builder.Services.Configure<IISServerOptions>(options =>
+    options.MaxRequestBodyBufferSize = 20 * 1_000_000
+);
 
 
 builder.Services
