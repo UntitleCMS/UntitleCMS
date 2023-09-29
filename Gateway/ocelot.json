@@ -34,6 +34,38 @@
       }
     },
 
+    //blog/v2 or article
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80 
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/article/v1/{url}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/article/v1/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "PATCH", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    },
+
 
 
     //auth

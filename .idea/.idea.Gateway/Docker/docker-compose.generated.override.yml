@@ -1,0 +1,23 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.4"
+services:
+  gateway:
+    build:
+      context: "C:\\Users\\Anirut\\Desktop\\MyFnPj\\Gateway"
+      dockerfile: "Gateway/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net7.0/Gateway.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      NUGET_PACKAGES: "C:\\Users\\Anirut\\.nuget\\packages"
+      NUGET_FALLBACK_PACKAGES: "C:\\Users\\Anirut\\.nuget\\packages"
+    image: "gateway:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\Anirut\\.nuget\\packages:/root/.nuget/fallbackpackages"
+    - "C:\\Users\\Anirut\\Desktop\\MyFnPj\\Gateway\\Gateway:/app:rw"
+    - "C:\\Users\\Anirut\\Desktop\\MyFnPj\\Gateway:/src:rw"
+    working_dir: "/app"
