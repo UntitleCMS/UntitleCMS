@@ -39,6 +39,15 @@ services:
       - blog-database
       - mongo1
 
+  commentservice:
+    image: villsource/commentservice
+    ports:
+        - 3000:3000
+    environment:
+        - DB_CONNECTION_STRING=mongodb://mongo1:50001/comment?replicaSet=my-mongo-set
+    networks:
+        - backend
+
 
   authenticationservice:
     image: villsource/authenticationservice
