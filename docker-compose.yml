@@ -39,6 +39,13 @@ services:
       - blog-database
       - mongo1
 
+  commentservice:
+    image: villsource/commentservice
+    environment:
+        - DB_CONNECTION_STRING=mongodb://mongo1:50001/comment?replicaSet=my-mongo-set
+    networks:
+        - backend
+
 
   authenticationservice:
     image: villsource/authenticationservice
@@ -67,6 +74,22 @@ services:
       - C:\Users\Anirut\Pictures\img-storage:/img-storage
     depends_on:
       - mongodb
+    networks:
+      - backend
+
+
+  coderunnerservice:
+    image: villsource/coderunnerservice
+    ports:
+      - 3000:3000
+    environment:
+      CODE_REPO: /sourcecodes
+      SLAVE_USER_NAME: runner
+      SLAVE_HOST_PYTHON: python-slave
+      SLAVE_HOST_JAVA: java-slave
+    volumes:
+      - ./CompilerContainer/Keys:/keys
+      - ./CompilerContainer/SourceCode:/sourcecodes
     networks:
       - backend
 
@@ -112,6 +135,33 @@ services:
     ports:
       - 50001:50001
     command: bash /scripts/endpoint.sh
+    networks:
+      - backend
+
+
+  python-slave:
+    image: python-slave
+    build:
+      context: ./CompilerContainer
+      dockerfile: Python.Dockerfile
+    environment:
+      USER_NAME: runner
+    volumes:
+      - ./CompilerContainer/Keys:/config/.ssh
+      - ./CompilerContainer/SourceCode:/config/sourcecode
+    networks:
+      - backend
+
+  java-slave:
+    image: java-slave
+    build:
+      context: ./CompilerContainer
+      dockerfile: Java.Dockerfile
+    environment:
+      USER_NAME: runner
+    volumes:
+      - ./CompilerContainer/Keys:/config/.ssh
+      - ./CompilerContainer/SourceCode:/config/sourcecode
     networks:
       - backend
 
