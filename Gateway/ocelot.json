@@ -1,6 +1,19 @@
 {
   "Routes": [
 
+    // Code Runner
+    {
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "coderunnerservice",
+          "Port": 3000
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/runner/v1/{url}",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
+    },
 
     //blog
     {
@@ -40,7 +53,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "articleservice",
-          "Port": 80 
+          "Port": 80
         }
       ],
       "DownstreamPathTemplate": "/{url}",
@@ -186,7 +199,7 @@
       "RouteKeys": [
         "a"
       ],
-      "UpstreamPathTemplate": "/",
+      "UpstreamPathTemplate": "/agg",
       "Aggregator": "PostsAggregator"
 
     }
