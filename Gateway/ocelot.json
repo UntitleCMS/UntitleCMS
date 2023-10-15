@@ -58,7 +58,14 @@
       ],
       "DownstreamPathTemplate": "/{url}",
       "UpstreamPathTemplate": "/api/article/v1/{url}",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore",
+        "AllowAnonymous": true // This will allow unauthorized users
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
     },
     {
       "DownstreamScheme": "http",
