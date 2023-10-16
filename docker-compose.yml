@@ -87,11 +87,13 @@ services:
       SLAVE_USER_NAME: runner
       SLAVE_HOST_PYTHON: python-slave
       SLAVE_HOST_JAVA: java-slave
+      SLAVE_HOST_GCC: gcc-slave
     volumes:
       - ./CompilerContainer/Keys:/keys
       - ./CompilerContainer/SourceCode:/sourcecodes
     networks:
       - backend
+      - runner
 
 
 
@@ -150,7 +152,7 @@ services:
       - ./CompilerContainer/Keys:/config/.ssh
       - ./CompilerContainer/SourceCode:/config/sourcecode
     networks:
-      - backend
+      - runner
 
   java-slave:
     image: java-slave
@@ -163,7 +165,20 @@ services:
       - ./CompilerContainer/Keys:/config/.ssh
       - ./CompilerContainer/SourceCode:/config/sourcecode
     networks:
-      - backend
+      - runner
+
+  gcc-slave:
+    image: gcc-slave
+    build:
+      context: ./CompilerContainer
+      dockerfile: GCC.Dockerfile
+    environment:
+      USER_NAME: runner
+    volumes:
+      - ./CompilerContainer/Keys:/config/.ssh
+      - ./CompilerContainer/SourceCode:/config/sourcecode
+    networks:
+    - runner
 
 
 volumes:
@@ -172,3 +187,5 @@ volumes:
 
 networks:
   backend:
+  runner:
+
