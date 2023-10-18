@@ -1,6 +1,21 @@
 {
   "Routes": [
 
+    // front
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "frontend",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/{url}",
+      //"UpstreamHttpMethod": [ "GET", "POST" ]
+    },
+
+
     // Code Runner
     {
       "DownstreamScheme": "ws",

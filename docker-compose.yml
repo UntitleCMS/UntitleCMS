@@ -8,9 +8,16 @@ services:
       dockerfile: Gateway/Dockerfile
     networks:
       - backend
+      - front
     depends_on:
       - blogservice
       - authenticationservice
+
+  frontend:
+    image: villsource/beta-blog
+    networks:
+      - front
+
 
   blogservice:
     image: villsource/blogservice
@@ -188,4 +195,5 @@ volumes:
 networks:
   backend:
   runner:
+  front:
 
