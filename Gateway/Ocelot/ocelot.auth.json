@@ -1,0 +1,16 @@
+{
+  "Routes": [
+
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/v1/{url}"
+    }
+  ]
+}
