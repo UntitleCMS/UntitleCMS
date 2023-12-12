@@ -1,0 +1,38 @@
+{
+  "Routes": [
+
+    // Query
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 3000
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{url}",
+      "UpstreamPathTemplate": "/api/comment/v1/{url}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+
+    // Command
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 3000
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{url}",
+      "UpstreamPathTemplate": "/api/comment/v1/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "PATCH", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    }
+  ]
+}

@@ -1,0 +1,293 @@
+{
+  "Routes": [
+
+    // front
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "frontend",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/{url}",
+      //"UpstreamHttpMethod": [ "GET", "POST" ]
+    },
+
+
+    // Code Runner
+    {
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "coderunnerservice",
+          "Port": 3000
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/runner/v1/{url}",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
+    },
+
+    //blog
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "blogservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/blog/v1/{url}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "blogservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/blog/v1/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "PATCH", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    },
+
+    //blog/v2 or article
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/article/v1/{url}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Priority": 0
+    },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/articles",
+      "UpstreamPathTemplate": "/api/article/v1/articles/",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/articles",
+      "UpstreamPathTemplate": "/api/article/v1/public/articles",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/articles/{id}",
+      "UpstreamPathTemplate": "/api/article/v1/articles/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/articles/{id}",
+      "UpstreamPathTemplate": "/api/article/v1/public/articles/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/article/v1/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "PATCH", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    },
+
+
+    //comment
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 3000
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{url}",
+      "UpstreamPathTemplate": "/api/comment/v1/{url}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 3000
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{url}",
+      "UpstreamPathTemplate": "/api/comment/v1/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "PATCH", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    },
+
+
+    //auth
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/v1/{url}"
+    },
+
+
+
+    //img
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "picturestorageservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/img/v1/{url}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "picturestorageservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/img/v1/{url}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    },
+
+
+
+
+
+    // playground
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "blogservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/posts",
+      "UpstreamPathTemplate": "/posts",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Key": "a"
+    },
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "blogservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/posts/rVsQTzkAu0OgnAjbgQcA2A",
+      "UpstreamPathTemplate": "/posts/p",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Aggregator": "PostsAggregator",
+      "Key": "b"
+    }
+
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "a"
+      ],
+      "UpstreamPathTemplate": "/agg",
+      "Aggregator": "PostsAggregator"
+
+    }
+
+
+  ],
+
+
+
+  // gb
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:443",
+    "DangerousAcceptAnyServerCertificateValidator": true
+  }
+}

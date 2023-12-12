@@ -1,0 +1,23 @@
+{
+  "Routes": [
+    // Get Articles with authorize
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/bookmark",
+      "UpstreamPathTemplate": "/api/article/v1/bookmark",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    }
+  ]
+}

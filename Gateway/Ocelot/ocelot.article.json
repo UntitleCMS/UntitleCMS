@@ -1,0 +1,108 @@
+{
+  "Routes": [
+
+    // Get /*
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/article/v1/{url}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Priority": 0
+    },
+
+    // Get Articles with authorize
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/articles",
+      "UpstreamPathTemplate": "/api/article/v1/articles/",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    },
+
+    // Get Articles without authorize
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/articles",
+      "UpstreamPathTemplate": "/api/article/v1/public/articles",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+
+
+    // Get Article with authorize
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/articles/{id}",
+      "UpstreamPathTemplate": "/api/article/v1/articles/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    },
+
+    // Get Article without authorize
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/articles/{id}",
+      "UpstreamPathTemplate": "/api/article/v1/public/articles/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+
+    // POST, PUT, PATCH and DELETE /*
+    {
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articleservice",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/article/v1/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "PATCH", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      },
+      "AddQueriesToRequest": {
+        "sub": "Claims[sub-b64] > value"
+      }
+    }
+  ]
+}

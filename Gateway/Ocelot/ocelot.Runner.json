@@ -1,0 +1,16 @@
+{
+  "Routes": [
+    {
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "coderunnerservice",
+          "Port": 3000
+        }
+      ],
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/api/runner/v1/{url}",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
+    }
+  ]
+}
