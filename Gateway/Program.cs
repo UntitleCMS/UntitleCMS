@@ -2,9 +2,6 @@ using Gateway.Aggregators;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Values;
-using OpenIddict.Abstractions;
-using OpenIddict.Validation.AspNetCore;
 using OpenIddict.Validation.SystemNetHttp;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,17 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
-builder.Configuration.AddOcelot(Path.Combine(System.IO.Directory.GetCurrentDirectory(),"Ocelot"),builder.Environment);
-
-
+builder.Configuration
+    .AddOcelot(Path.Combine(Directory.GetCurrentDirectory(),"Ocelot"),builder.Environment);
 
 builder.Services.AddOpenIddict()
     .AddValidation(option =>
@@ -31,26 +24,21 @@ builder.Services.AddOpenIddict()
         option.UseSystemNetHttp();
         option.UseAspNetCore();
     });
+
 // Allow any certificate ***DANGER FOR PRODUCTION***
 builder.Services.AddHttpClient(typeof(OpenIddictValidationSystemNetHttpOptions).Assembly.GetName().Name!)
     .ConfigurePrimaryHttpMessageHandler(_ => new HttpClientHandler
     {
         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
     });
-//builder.Services.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
-//    option =>
-//{
-//    option.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
-//    option.DefaultChallengeScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
-//    option.DefaultAuthenticateScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
-//});
 
-// body size
+
+// Set max Body size
 builder.Services.Configure<KestrelServerOptions>(options =>
-    options.Limits.MaxRequestBodySize = 20 * 1_000_000
+    options.Limits.MaxRequestBodySize = 50 * 1_000_000
 );
 builder.Services.Configure<IISServerOptions>(options =>
-    options.MaxRequestBodyBufferSize = 20 * 1_000_000
+    options.MaxRequestBodyBufferSize = 50 * 1_000_000
 );
 
 
