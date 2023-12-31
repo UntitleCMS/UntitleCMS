@@ -12,6 +12,8 @@ services:
     depends_on:
       - blogservice
       - authenticationservice
+    environment:
+        AUTH_ISSUER: https://p.villsource.tk/api/auth/v2
 
   frontend:
     image: villsource/beta-blog

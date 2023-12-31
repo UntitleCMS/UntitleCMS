@@ -20,7 +20,9 @@ builder.Configuration
 builder.Services.AddOpenIddict()
     .AddValidation(option =>
     {
-        option.SetIssuer("http://authenticationservice/");
+        option.SetIssuer(Environment.GetEnvironmentVariable("AUTH_ISSUER")
+            ?? "https://p.villsource.tk/api/auth/v2"
+            ?? throw new Exception("Authentication Issuer not found."));
         option.UseSystemNetHttp();
         option.UseAspNetCore();
     });
@@ -34,11 +36,13 @@ builder.Services.AddHttpClient(typeof(OpenIddictValidationSystemNetHttpOptions).
 
 
 // Set max Body size
+_ = int.TryParse(Environment.GetEnvironmentVariable("MAX_REQUEST_BODY_SIZE")
+    ??"50", out int maxBodySizeMegabyte);
 builder.Services.Configure<KestrelServerOptions>(options =>
-    options.Limits.MaxRequestBodySize = 50 * 1_000_000
+    options.Limits.MaxRequestBodySize = maxBodySizeMegabyte * 1_000_000
 );
 builder.Services.Configure<IISServerOptions>(options =>
-    options.MaxRequestBodyBufferSize = 50 * 1_000_000
+    options.MaxRequestBodyBufferSize = maxBodySizeMegabyte * 1_000_000
 );
 
 
@@ -56,13 +60,12 @@ if (app.Environment.IsDevelopment())
 }
 
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-//app.UseWebSockets();
 app.UseOcelot().Wait();
 
 app.Run();

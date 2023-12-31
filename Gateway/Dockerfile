@@ -2,6 +2,7 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
+RUN mkdir /app/Ocelot
 EXPOSE 80
 EXPOSE 443
 
