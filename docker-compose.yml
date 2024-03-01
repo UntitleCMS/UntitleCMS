@@ -47,6 +47,9 @@ services:
     depends_on:
       - blog-database
       - mongo1
+    environment:
+      DB_CONNECTION_STRING: mongodb://mongo1:50001/?replicaSet=my-mongo-set
+      MQ_HOST: rabit-mq
 
   commentservice:
     image: villsource/commentservice
@@ -148,6 +151,13 @@ services:
     command: bash /scripts/endpoint.sh
     networks:
       - backend
+
+  rabit-mq:
+    hostname: rabit-mq
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
 
 
   python-slave:
