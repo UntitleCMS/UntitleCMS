@@ -1,0 +1,20 @@
+{
+  "Routes": [
+    // Get Articles with authorize
+    {
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "google.com",
+          "Port": 443
+        }
+      ],
+      "DownstreamPathTemplate": "/",
+      "UpstreamPathTemplate": "/qwerty",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OpenIddict.Validation.AspNetCore"
+      }
+    }
+  ]
+}

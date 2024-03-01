@@ -1,0 +1,77 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/auth/v2",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "local.villsource.tk",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/v2",
+      "UpstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Forwarded-Host": "localhost:7269",
+        "X-Forwarded-Proto": "https"
+      }
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/auth/v2/.well-known/openid-configuration",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "local.villsource.tk",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/v2/.well-known/openid-configuration",
+      "UpstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Forwarded-Host": "localhost:7269",
+        "X-Forwarded-Proto": "https"
+      },
+      "DownstreamHeaderTransform": {
+        "Uncle": "Bob"
+      }
+    },
+
+
+
+    {
+      "DownstreamPathTemplate": "/api/auth/v2{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "local.villsource.tk",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/v2{url}",
+      "UpstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Forwarded-Host": "localhost:7269",
+        "X-Forwarded-Proto": "https"
+      }
+    },
+
+    {
+      "DownstreamPathTemplate": "/oauth/cb/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "local.villsource.tk",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/oauth/cb/{url}",
+      "UpstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Forwarded-Host": "localhost:7269",
+        "X-Forwarded-Proto": "https"
+      }
+    }
+
+  ]
+}
